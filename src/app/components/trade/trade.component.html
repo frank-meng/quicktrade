@@ -1,0 +1,39 @@
+<div class="wrapper" ngClass.lt-md="wrapper--lt-md" ngClass.gt-md="wrapper--gt-md" fxLayout="column"
+    fxLayoutAlign="center" fxLayout.xs="column" fxLayoutAlign.xs="center center">
+
+    <div fxFlex="30%">
+        <qt-quote (lastQuote)="quoteHandler($event)"></qt-quote>
+    </div>
+
+
+    <div fxFlex="60%" *ngIf="quote$ | async as quote">
+        <div class="info">
+
+            <div class="info__bid">
+
+                <form class="form" [formGroup]="tradeForm" (ngSubmit)="onOrder()">
+
+                    <mat-form-field class="form_field">
+                        <input matInput type="number" placeholder="Bid Price" formControlName="bidPrice">
+                        <mat-error> Cannot be less than 0</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="form_field">
+                        <input matInput type="number" placeholder="Number of Shares" formControlName="nos">
+                        <mat-error> Cannot be less than 0</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="form_field">
+                        <input matInput type="text" placeholder="Buy or Sell" formControlName="isBuy">
+
+                    </mat-form-field>
+
+                    <button class="form_submit" color="primary" mat-raised-button> Trade</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div fxFlex="60%" *ngIf="result$ | async as result">
+        <div class="info">
+            Order {{result.id}} accepted. Do you want to place another order?
+        </div>    
+    </div>
+</div>

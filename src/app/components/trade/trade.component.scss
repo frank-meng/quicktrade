@@ -1,0 +1,68 @@
+@import '../../../styles/theme';
+
+:host {
+  display: block;
+}
+
+.wrapper {
+  background-color: mat-color($qt-background, card);
+  padding: 64px 24px;
+  height: 100%;
+}
+
+.wrapper--lt-md {
+  padding: 32px 16px;
+}
+
+.wrapper--gt-md {
+  padding: 128px 24px;
+}
+
+.thumbnail {
+  display: block;
+  margin: 0 auto;
+  max-width: 30vmin;
+}
+
+.info {
+  max-width: 400px;
+}
+
+.info__bid {
+  margin: 24px 0;
+}
+
+.info__bid-value {
+  color: mat-color($qt-foreground, text);
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 1em;
+}
+.info__bid-value--lt-md {
+  font-size: 48px;
+}
+
+.info__bid-value-decimal {
+  color: mat-color($qt-foreground, text);
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 600;
+  font-size: 36px;
+  margin-left: -.1em;
+}
+
+.info__bid-value-decimal--lt-md {
+  font-size: 24px;
+}
+
+.info__bid-label {
+  color: mat-color($qt-foreground, hint-text);
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  margin-left: 16px;
+}
+
+.info__bid-button {
+  width: 100%;
+}
