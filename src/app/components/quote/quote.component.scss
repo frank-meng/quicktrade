@@ -1,0 +1,30 @@
+@import '../../../styles/theme';
+
+:host {
+  display: block;
+}
+
+
+
+.stock__field {
+  display: block;
+  color: mat-color($qt-foreground, text);
+  border-bottom: 1px solid mat-color($qt-foreground, divider);
+  font-size: mat-font-size($qt-typography, title);
+  font-weight: mat-font-weight($qt-typography, title);
+  line-height: 64px;
+  margin: 10;
+  padding: 0 24px;
+}
+
+.tile__price-tag {
+  color: mat-color($qt-foreground, text);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 30;
+  padding: 0 24px;
+}
+
+.tile__price-tag--xs {
+  font-size: 14px;
+}

@@ -1,0 +1,31 @@
+
+<mat-grid-list [cols]="columns$ | async" gutterSize="16">
+    <mat-grid-tile class="tile" *ngFor="let account of accounts">
+      <a class="tile__content"
+         fxLayout="column"
+         fxLayoutAlign="center center"
+         [routerLink]="['/account', account.name]">
+  
+        <span class="tile__price-tag"
+              ngClass.xs="tile__price-tag--xs">Market Value: 
+          {{ account.balance | currency:'USD':'symbol':'.0' }}  
+        </span>
+
+        
+        <div class="tile__title--xs"
+             ngClass.xs="tile__title--xs"
+             ngClass.lg="tile__title--lg">  Account Name:  {{ account.name }}</div>
+
+        <div class="tile__title--xs"
+             ngClass.xs="tile__title--xs"
+             ngClass.lg="tile__title--xs">  Account Type:  {{ account.type }}</div>
+      </a>
+
+      <button class="info__bid-button"
+              mat-raised-button
+              color="accent"
+              (click)="trade(account.name)">
+        Trade 
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>

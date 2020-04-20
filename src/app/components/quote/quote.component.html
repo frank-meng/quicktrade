@@ -1,0 +1,16 @@
+<div fxFlex="50%">
+  <mat-form-field class="stock__field">
+    <input matInput type="text" placeholder="Enter Stock Symbol" [formControl]="symbolInput">
+    <mat-error *ngIf="symbolInput.hasError('notExist')"> Symbol cannot be found</mat-error>
+
+  </mat-form-field>
+</div>
+
+
+
+  <div *ngIf="quote$ | async as quote">
+   
+    <span class="tile__price-tag" ngClass.xs="tile__price-tag--xs">
+      Latest Price:  {{ quote.price | currency:'USD':'symbol':'.0' }} </span>
+  </div>
+
