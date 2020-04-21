@@ -1,0 +1,22 @@
+@import '../../../styles/theme';
+
+:host {
+  display: block;
+}
+
+.info {
+  max-width: 400px;
+}
+
+
+.info__bid-label {
+  color: mat-color($qt-foreground, hint-text);
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  margin-left: 16px;
+}
+
+.info__bid-button {
+  width: 100%;
+}

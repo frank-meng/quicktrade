@@ -19,7 +19,7 @@ import {MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AccountComponent,LoginComponent, AlertComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent, RegisterComponent} from './components';
+import { AccountComponent,SigninComponent, LoginComponent, PostloginComponent, AlertComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent} from './components';
 import {CookieService} from 'ngx-cookie-service';
 import { HTTP_INTERCEPTORS,HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
@@ -33,11 +33,12 @@ import { JwtInterceptor,FakeBackendInterceptor } from './helpers';
     HomeComponent,
     AccountComponent,
     LoginComponent,
-    RegisterComponent,
     AlertComponent,
     AccountgridComponent,
     TradeComponent,
-    QuoteComponent
+    QuoteComponent,
+    SigninComponent,
+    PostloginComponent
   ],
   imports: [
     BrowserModule,
@@ -59,8 +60,8 @@ import { JwtInterceptor,FakeBackendInterceptor } from './helpers';
   ],
   providers: [CookieService,
     {provide: APP_BASE_HREF, useValue: '/quicktrade'},
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
+  //  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  //  { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
 
     { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
     { provide: AUTH_URL, useValue: environment.authUrl}

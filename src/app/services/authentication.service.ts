@@ -12,6 +12,7 @@ import { API_BASE_URL } from '../app.token';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  
   constructor(@Inject(API_BASE_URL) private baseUrl: string,
     private http: HttpClient) {
 

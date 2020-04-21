@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { User } from './models';
-import {AuthenticationService} from './services';
+import { AppService } from './services';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'qt-root',
@@ -11,24 +12,22 @@ import {AuthenticationService} from './services';
 })
 export class AppComponent {
   title = 'quicktrade';
-  currentUser: User;
+  currentUser: Observable<User>;
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private appService: AppService
   ) {
-    this.authenticationService.currentUser.subscribe(x => {
 
-      console.log(' x: ' + JSON.stringify(x));
 
-      this.currentUser = x;
-    
-    }  );
+    this.currentUser = this.appService.currentUser$;
+
+
   }
 
   logout() {
-    this.authenticationService.logout();
-    this.router.navigate(['/login']);
+    this.appService.logout();
+    this.router.navigate(['/signin']);
   }
 
 }
