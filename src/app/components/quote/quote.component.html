@@ -11,6 +11,6 @@
   <div *ngIf="quote$ | async as quote">
    
     <span class="tile__price-tag" ngClass.xs="tile__price-tag--xs">
-      Latest Price:  {{ quote.price | currency:'USD':'symbol':'.0' }} </span>
+      Latest Price:  {{ quote.lastPrice | currency:'USD':'symbol':'.0' }} </span>
   </div>
 

@@ -60,7 +60,7 @@ import { JwtInterceptor,FakeBackendInterceptor } from './helpers';
   ],
   providers: [CookieService,
     {provide: APP_BASE_HREF, useValue: '/quicktrade'},
-  //  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   //  { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
 
     { provide: API_BASE_URL, useValue: environment.apiBaseUrl },

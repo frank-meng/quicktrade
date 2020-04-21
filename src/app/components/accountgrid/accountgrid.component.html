@@ -1,6 +1,6 @@
 
 <mat-grid-list [cols]="columns$ | async" gutterSize="16">
-    <mat-grid-tile class="tile" *ngFor="let account of accounts">
+    <mat-grid-tile class="tile" *ngFor="let account of accounts$ | async">
       <a class="tile__content"
          fxLayout="column"
          fxLayoutAlign="center center"

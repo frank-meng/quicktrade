@@ -12,7 +12,7 @@ export class Order {
 export class Quote {
     constructor(
         public symbol: string,
-        public price: number,
+        public lastPrice: number,
     ){}
 }
 

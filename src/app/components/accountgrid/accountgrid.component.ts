@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { MediaObserver } from '@angular/flex-layout';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/services';
+import { Account } from '../../models';
 
 @Component({
   selector: 'qt-accountgrid',
@@ -12,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class AccountgridComponent {
 
-  @Input() accounts: Account[];
+  accounts$: Observable<Account[]>;
   
   readonly columns$: Observable<number>;
   readonly breakpointsToColumnsNumber = new Map([
@@ -24,7 +26,8 @@ export class AccountgridComponent {
   ]);
 
   constructor(private media: MediaObserver,
-    private router: Router) {
+    private router: Router,
+    private accountService: AccountService) {
     // If the initial screen size is xs ObservableMedia doesn't emit an event
     // and grid-list rendering fails. Once the following issue is closed, this
     // comment can be removed: https://github.com/angular/flex-layout/issues/388
@@ -33,6 +36,8 @@ export class AccountgridComponent {
         map(mc => <number>this.breakpointsToColumnsNumber.get(mc[0].mqAlias)),
         startWith(3)
       );
+
+      this.accounts$ = this.accountService.getAll();
   }
 
   trade(accountName:string){

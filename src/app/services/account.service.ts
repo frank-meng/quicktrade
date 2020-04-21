@@ -13,17 +13,13 @@ export class AccountService {
     private http: HttpClient) { }
 
 
-  getAll(currentUser: User): Observable<Account[]> {
-    console.log(` get all accounts  from ${currentUser.username}`);
+  getAll(): Observable<Account[]> {
+    console.log(` get all accounts `);
     //const accounts: Account[] = [new Account("RD57B","CASH", 897653,397745.9), 
     //                            new Account("BN6776d","RRSP", 3434343, 876333.86)];
 
-    const accounts =  this.http.get<Account[]>(`${this.baseUrl}/api/accounts`);
-    
-    return (accounts);
+    return this.http.get<Account[]>(`${this.baseUrl}/api/accounts`);
   }
-
-
 
   register(user: User) {
     return this.http.post(`${this.baseUrl}/users/register`, user);

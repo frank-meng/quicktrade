@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     private accountService: AccountService
   ) {
     this.currentUser$ = this.appService.retrieveUser();
-    //this.accounts$ = this.accountService.getAll();
+    
   }
 
 

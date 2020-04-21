@@ -13,7 +13,7 @@ export class TradeService {
     private http: HttpClient) { }
 
   quote(symbol: string): Observable<any> {
-    return this.http.get<Quote>(`${this.baseUrl}/api2/quote/${symbol}`)
+    return this.http.get<Quote>(`${this.baseUrl}/api/stocks/${symbol}`)
       .pipe(catchError(err => {
         if (err.status === 404) {
           console.log(`symbol ${symbol} not found`);
