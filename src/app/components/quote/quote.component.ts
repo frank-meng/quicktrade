@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TradeService } from 'src/app/services';
-import { pipe, Observable } from 'rxjs';
+import { pipe, Observable, EMPTY } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { Quote } from 'src/app/models';
 
@@ -20,21 +20,24 @@ export class QuoteComponent {
   constructor(
     private tradeService: TradeService) {
     //option 1
-     this.symbolInput.valueChanges.                                  
-     pipe(debounceTime(800))                                     
-     .subscribe(stock => this.getQuote(stock));   
+    // this.symbolInput.valueChanges.                                  
+    // pipe(debounceTime(800))                                     
+    // .subscribe(stock => this.getQuote(stock));   
 
     //option 2
-    /*
+    
     this.quote$ = this.symbolInput.valueChanges
       .pipe(debounceTime(800))
       .pipe(switchMap(
-        symbol=> {
-          this.lastQuote.emit(symbol);
-          return this.tradeService.quote(symbol);
-        }
+        symbol=> this.tradeService.quote(symbol)
       ));
-    */
+
+      this.quote$.subscribe(newQuote=>{
+          console.log ("  --- "+newQuote);
+          this.lastQuote.emit(newQuote);
+        }, err => console.log(err)
+      );
+    
   }
 
   getQuote(symbol: string): void {

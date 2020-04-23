@@ -15,10 +15,10 @@ export class TradeService {
   quote(symbol: string): Observable<any> {
     return this.http.get<Quote>(`${this.baseUrl}/api/stocks/${symbol}`)
       .pipe(catchError(err => {
-        if (err.status === 404) {
-          console.log(`symbol ${symbol} not found`);
-          return empty()
-        }
+        console.log( err);
+        console.log(`symbol ${symbol} not found`);
+        return empty()
+        
       }));
     // const quote: Quote = new Quote("AAPL", 145.9);
 
@@ -31,7 +31,6 @@ export class TradeService {
       .pipe(map(id => {
         console.log(`bid retured ${id}`);
        // this.currentUserSubject.next(user);
-
       return id;
     }));;
   }

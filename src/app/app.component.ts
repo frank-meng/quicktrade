@@ -12,17 +12,12 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   title = 'quicktrade';
-  currentUser: Observable<User>;
+  //currentUser: Observable<User>;
 
   constructor(
     private router: Router,
     private appService: AppService
   ) {
-
-
-    this.currentUser = this.appService.currentUser$;
-
-
   }
 
   logout() {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 import { AppService } from '../services';
+import { catchError, flatMap } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -16,19 +17,50 @@ export class JwtInterceptor implements HttpInterceptor {
         const { url, method, headers, body } = request;
         if (url.startsWith('/api')) {
          
-            const token = localStorage.getItem('token');
-            if (this.appService.checkCredentials) {
+            //const token = localStorage.getItem('token');
+            const token = this.appService.getAccessToken();
+
+            if (token) {
                 request = request.clone({
                     setHeaders: {
                         Authorization: `Bearer ${token}`
                     }
                 });
+            }else{
+                console.log("  NO TOKEN");
+                
+                
             }
 
         }
+        return next.handle(request).pipe(catchError(err => {
+            if (err.status === 401) {
+                // auto logout if 401 response returned from api
+                console.log("  401 error ");
+                return this.appService.refreshAccessToken()
+                    .pipe(flatMap( newToken=>{
 
+                        console.log("  get new  TOKEN");
+                        this.appService.saveToken(newToken);
 
-        return next.handle(request);
+                        const aToken = this.appService.getAccessToken();
+
+                        request.clone({
+                            setHeaders: {
+                                Authorization: `Bearer ${aToken}`
+                            }
+                        });
+                        return next.handle(request);
+                    }
+                ));
+
+            } else{
+                console.log("  get other error");
+                const error = err.error.message || err.statusText;
+                return throwError(error);
+            }
+        }))
+        
     }
 
     /*

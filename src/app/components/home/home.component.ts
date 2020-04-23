@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService, AuthenticationService, AccountService } from '../../services'
-import { User, Account } from '../../models';
-import { Observable } from 'rxjs';
+import { User } from '../../models';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'trd-home',
@@ -12,20 +12,17 @@ import { Observable } from 'rxjs';
 export class HomeComponent implements OnInit {
 
   currentUser$: Observable<User>;
-  accounts$: Observable<Account[]>;
+   //currentUser$: BehaviorSubject<User>;
 
   
   constructor(
     private appService: AppService,
     private accountService: AccountService
   ) {
-    this.currentUser$ = this.appService.retrieveUser();
-    
   }
 
-
   ngOnInit() {
-    console.log("  init home");
+    this.currentUser$ =  this.appService.retrieveUser();
   }
 
 

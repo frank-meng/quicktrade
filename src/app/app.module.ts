@@ -15,12 +15,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule } from '@angular/material/select';
-
+import {CookieService} from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AccountComponent,SigninComponent, LoginComponent, PostloginComponent, AlertComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent} from './components';
-import {CookieService} from 'ngx-cookie-service';
 import { HTTP_INTERCEPTORS,HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { API_BASE_URL, AUTH_URL } from './app.token';
