@@ -79,13 +79,17 @@ export class AppService {
 */
 
   checkCredentials() {
-
-    if (this.getAccessToken()) {
+    if (this.getRefreshToken()) {
+    //if (this.getAccessToken()) {
       //if (localStorage.getItem('token')) {
       return true;
     }
     return false;
   }
+
+
+
+
 
   logout() {
     console.log(" log out");

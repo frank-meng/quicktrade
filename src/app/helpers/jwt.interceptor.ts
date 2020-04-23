@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 
 import { AppService } from '../services';
-import { catchError, flatMap } from 'rxjs/operators';
+import { catchError, flatMap, switchMap, filter, take } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -36,33 +36,66 @@ export class JwtInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 401) {
                 // auto logout if 401 response returned from api
-                console.log("  401 error ");
-                return this.appService.refreshAccessToken()
-                    .pipe(flatMap( newToken=>{
-
-                        console.log("  get new  TOKEN");
-                        this.appService.saveToken(newToken);
-
-                        const aToken = this.appService.getAccessToken();
-
-                        request.clone({
-                            setHeaders: {
-                                Authorization: `Bearer ${aToken}`
-                            }
-                        });
-                        return next.handle(request);
-                    }
-                ));
-
+           
+                return this.handleRefreshToken(request, next);
             } else{
                 console.log("  get other error");
                 const error = err.error.message || err.statusText;
                 return throwError(error);
             }
         }))
+
+       
+        
         
     }
+    private isRefreshing = false;
+    private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    
+    
+    private  handleRefreshToken(request: HttpRequest<any>, next: HttpHandler){
+        console.log("  401 error ");
 
+        if ( this.isRefreshing) {
+            // block calls until token is refreshed
+            return this.refreshTokenSubject.pipe(
+                filter( token => token != null),
+                take(1),
+                switchMap( (accessToken)=>{
+                    request.clone({
+                        setHeaders: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    });
+                    return next.handle(request);
+                })
+            )
+
+        }else{
+            this.isRefreshing = true;
+            this.refreshTokenSubject.next(null);
+
+            return this.appService.refreshAccessToken()
+                .pipe(flatMap( newToken=>{
+
+                console.log("  get new  TOKEN");
+                this.appService.saveToken(newToken);
+                this.isRefreshing = false;
+
+                const accessToken = this.appService.getAccessToken();
+                this.refreshTokenSubject.next(accessToken);
+
+                request.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                return next.handle(request);
+            }
+        ));
+        }
+
+    }
     /*
         intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
