@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Account, Quote, Order } from 'src/app/models';
 import { Observable, of } from 'rxjs';
-import { TradeService } from 'src/app/services';
 import { Store, select } from '@ngrx/store';
 import { QuoteState } from 'src/app/store/reducers/quote';
 import { getQuoteData, getPlaceOrderData, PlaceOrderAction, getSelectedAccountData } from 'src/app/store';
@@ -47,6 +46,11 @@ export class TradeComponent {
     this.selectedAccount$ = this.store.pipe(select(getSelectedAccountData));
 
     this.selectedAccount$.subscribe ( a=> this.selectedAccountName = a.name);
+
+    this.quote$.subscribe( q=> {
+      if (q !=null)
+        this.selectedSymbol=q.symbol;
+    });
   }
 
   onOrder(): void {
@@ -55,7 +59,6 @@ export class TradeComponent {
       const nos = this.tradeForm.controls['nos'].value;
       //const isBuy = this.tradeForm.controls['isBuy'].value;
       const isBuy = true;
-
       const order = new Order(this.selectedSymbol, nos, isBuy, bidPrice,this.selectedAccountName);
       this.store.dispatch(new PlaceOrderAction({order: order}));
 

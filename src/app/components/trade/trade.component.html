@@ -10,7 +10,6 @@
 
     <div fxFlex="60%" *ngIf="quote$ | async as quote">
         <div class="info">
-
             <div class="info__bid">
 
                 <form class="form" [formGroup]="tradeForm" (ngSubmit)="onOrder()">
@@ -35,7 +34,7 @@
     </div>
     <div fxFlex="60%" *ngIf="result$ | async as result">
         <div class="info">
-            Order {{result.id}} accepted. Do you want to place another order?
+            Order (ID= <b>{{result}}</b>) accepted. Do you want to place another order?
         </div>    
     </div>
 </div>
