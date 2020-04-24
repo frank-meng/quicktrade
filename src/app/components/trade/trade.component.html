@@ -1,10 +1,12 @@
 <div class="wrapper" ngClass.lt-md="wrapper--lt-md" ngClass.gt-md="wrapper--gt-md" fxLayout="column"
     fxLayoutAlign="center" fxLayout.xs="column" fxLayoutAlign.xs="center center">
-
+    
+    <div fxFlex ="10%" *ngIf="selectedAccount$ | async as account">
+        <div class="info__bid-label">Selected Account: {{ account.name}}  -  {{ account.type}}</div>
+      </div>
     <div fxFlex="30%">
-        <qt-quote (lastQuote)="quoteHandler($event)"></qt-quote>
+        <qt-quote></qt-quote>
     </div>
-
 
     <div fxFlex="60%" *ngIf="quote$ | async as quote">
         <div class="info">

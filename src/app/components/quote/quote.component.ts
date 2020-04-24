@@ -1,9 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { TradeService } from 'src/app/services';
-import { pipe, Observable, EMPTY } from 'rxjs';
+import { Component} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { Quote } from 'src/app/models';
+import { Store, select } from '@ngrx/store';
+import { QuoteState } from 'src/app/store/reducers/quote';
+import { getQuoteData, QuoteAction } from 'src/app/store';
 
 @Component({
   selector: 'qt-quote',
@@ -15,40 +17,18 @@ export class QuoteComponent {
   symbolInput = new FormControl('');
   quote$: Observable<Quote>;
 
-  @Output() lastQuote = new EventEmitter<Quote>();
+  //@Output() lastQuote = new EventEmitter<Quote>();
 
   constructor(
-    private tradeService: TradeService) {
-    //option 1
-    // this.symbolInput.valueChanges.                                  
-    // pipe(debounceTime(800))                                     
-    // .subscribe(stock => this.getQuote(stock));   
+    private store: Store<QuoteState>
+  ) {
+    this.quote$ = this.store.pipe(select(getQuoteData));
 
-    //option 2
-    
-    this.quote$ = this.symbolInput.valueChanges
+    this.symbolInput.valueChanges
       .pipe(debounceTime(800))
-      .pipe(switchMap(
-        symbol=> this.tradeService.quote(symbol)
-      ));
-
-      this.quote$.subscribe(newQuote=>{
-          console.log ("  --- "+newQuote);
-          this.lastQuote.emit(newQuote);
-        }, err => console.log(err)
+      .subscribe(symbol => {
+        this.store.dispatch(new QuoteAction({ symbol: symbol }));
+      }
       );
-    
   }
-
-  getQuote(symbol: string): void {
-    
-    this.quote$ = this.tradeService.quote(symbol);
-    console.log(" checking quote " + symbol);
-
-    this.quote$.subscribe(newQuote=>{
-      console.log ("  --- "+newQuote);
-      this.lastQuote.emit(newQuote)});
-
-  }
-
 }

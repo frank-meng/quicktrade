@@ -26,6 +26,7 @@ export class TradeService {
   }
 
   placeOrder(order: Order): Observable<any> {
+    console.log(" placeOrder ------"+ JSON.stringify( order));
 
     return this.http.post<any>(`${this.baseUrl}/api/orders`, order)
       .pipe(map(id => {

@@ -26,6 +26,13 @@ import { API_BASE_URL, AUTH_URL } from './app.token';
 
 import { JwtInterceptor,FakeBackendInterceptor } from './helpers';
 
+import {EffectsModule} from '@ngrx/effects';
+import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';                       
+ import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {reducers, AccountsEffects, UserEffects, QuoteEffects, OrdersEffects} from './store';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +62,17 @@ import { JwtInterceptor,FakeBackendInterceptor } from './helpers';
     MatGridListModule,
     MatTabsModule,
     MatMenuModule,
-    MatSelectModule
+    MatSelectModule,
+
+    StoreModule.forRoot({...reducers, router: routerReducer}),   
+     StoreRouterConnectingModule.forRoot({                       
+       stateKey: 'router'                                        
+     }),
+    StoreDevtoolsModule.instrument({
+      name: ' DevTools',
+      logOnly: environment.production
+    }),
+    EffectsModule.forRoot([AccountsEffects, UserEffects, QuoteEffects, OrdersEffects]),   
   ],
   providers: [CookieService,
     {provide: APP_BASE_HREF, useValue: '/quicktrade'},

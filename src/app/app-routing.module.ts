@@ -7,7 +7,7 @@ import { AuthGuard , OAuthGuard} from './helpers';
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [OAuthGuard] },
   { path: 'account/:accountName', component: AccountComponent, canActivate: [OAuthGuard] },
-  { path: 'trade/:accountName', component: TradeComponent, canActivate: [OAuthGuard] },
+  { path: 'trade', component: TradeComponent, canActivate: [OAuthGuard] },
 
   { path: 'login', component: LoginComponent },
   { path: 'signin', component: SigninComponent },

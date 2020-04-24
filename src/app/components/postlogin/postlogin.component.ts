@@ -23,8 +23,8 @@ export class PostloginComponent implements OnInit {
     console.log( "  isLoggedIn = " + this.isLoggedIn);
 
     if(!this.isLoggedIn && i != -1) {
-      this._service.retrieveToken(window.location.href.substring(i + 5));
-      this.router.navigate([ '' ]);   
+      this._service.retrieveToken(window.location.href.substring(i + 5)) ;
+     // this.router.navigate([ '' ]);   
     }else if (this.isLoggedIn){
       console.log( " go to home ");
 

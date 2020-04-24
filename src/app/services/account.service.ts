@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 export class AccountService {
 
   constructor(@Inject(API_BASE_URL) private baseUrl: string,
-    private http: HttpClient) { }
+    private _http: HttpClient) { }
 
 
   getAll(): Observable<Account[]> {
@@ -18,18 +18,34 @@ export class AccountService {
     //const accounts: Account[] = [new Account("RD57B","CASH", 897653,397745.9), 
     //                            new Account("BN6776d","RRSP", 3434343, 876333.86)];
 
-    return this.http.get<Account[]>(`${this.baseUrl}/api/accounts`);
+    return this._http.get<Account[]>(`${this.baseUrl}/api/accounts`);
   }
 
   register(user: User) {
-    return this.http.post(`${this.baseUrl}/users/register`, user);
+    return this._http.post(`${this.baseUrl}/users/register`, user);
   }
 
 
   getAccountTransactions(accountName: string): Observable<Transaction[]> {
     console.log(` get  accound transactions =  ${accountName}`);
     //    return this.http.get<Product[]>('/api/products').pipe(map(products => <Product>products.find(p => p.id === productId)))
-    return this.http.get<Transaction[]>(`${this.baseUrl}/api/accttransactions/${accountName}`);
+    return this._http.get<Transaction[]>(`${this.baseUrl}/api/accttransactions/${accountName}`);
+  }
+
+  retrieveUser(): Observable<User> {
+    console.log(" retrieveUser ");
+
+    return this._http.get<User>(`${this.baseUrl}/api/user/info`);
+    /*
+    .pipe(user => {
+      console.log(`server retured ${user}`);
+      return user;
+    }).pipe(catchError(err => {
+      console.log(JSON.stringify(err));
+      return empty()
+    }
+    ));
+    */
   }
 
 }

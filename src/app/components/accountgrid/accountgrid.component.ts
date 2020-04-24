@@ -5,6 +5,9 @@ import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services';
 import { Account } from '../../models';
+import { Store, State, select } from '@ngrx/store';
+import { AccountsState } from 'src/app/store/reducers/accounts';
+import { AccountsAction, getAccountsData, SelectAccountAction } from 'src/app/store';
 
 @Component({
   selector: 'qt-accountgrid',
@@ -27,7 +30,8 @@ export class AccountgridComponent {
 
   constructor(private media: MediaObserver,
     private router: Router,
-    private accountService: AccountService) {
+    private store: Store<AccountsState>) {
+      
     // If the initial screen size is xs ObservableMedia doesn't emit an event
     // and grid-list rendering fails. Once the following issue is closed, this
     // comment can be removed: https://github.com/angular/flex-layout/issues/388
@@ -36,13 +40,18 @@ export class AccountgridComponent {
         map(mc => <number>this.breakpointsToColumnsNumber.get(mc[0].mqAlias)),
         startWith(3)
       );
+      this.accounts$ = this.store.pipe(select(getAccountsData));
+      
+      this.store.dispatch(new AccountsAction());
 
-      this.accounts$ = this.accountService.getAll();
   }
 
-  trade(accountName:string){
-    console.log (" trade "+ accountName);
-    this.router.navigate([ '/trade', accountName ]);          
+  trade(account:Account){
+    console.log (" trading "+ Account.name);
+
+    this.store.dispatch(new SelectAccountAction({account: account}));
+
+    this.router.navigate([ '/trade' ]);          
     
   }
 }
