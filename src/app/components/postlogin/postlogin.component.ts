@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from 'src/app/services';
 import { Router } from '@angular/router';
+import { AppService } from 'src/app/shared/app.service';
 
 @Component({
   selector: 'qt-postlogin',

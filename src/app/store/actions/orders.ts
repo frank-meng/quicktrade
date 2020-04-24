@@ -1,10 +1,13 @@
 import { Action, createAction, props, union } from '@ngrx/store';
-import { Order,Account} from '../../models';
+import { Order,Account, Quote} from '../../models';
 
 
 
 export enum OrdersActionTypes {
     SelectAccount = '[Orders] Select Account',
+
+    LoadQuote = '[Quote] Load',
+    LoadQuoteSuccess = '[Quote] LoadSuccess',
 
     Place = '[Orders] Place',
     PlaceSuccess = '[Orders] PlaceSuccess',
@@ -15,6 +18,18 @@ export class SelectAccountAction implements Action {
     constructor(public payload: { account: Account}) {}
 }
   
+export class QuoteAction implements Action {
+  readonly type = OrdersActionTypes.LoadQuote;
+  constructor(public payload: {symbol: string }) {}
+}
+
+
+export class QuoteSuccessAction implements Action {
+  readonly type = OrdersActionTypes.LoadQuoteSuccess;
+  constructor(public payload: { quote: Quote }) {        
+  }
+}
+
 export class PlaceOrderAction implements Action {
     readonly type = OrdersActionTypes.Place;
     constructor(public payload: { order: Order}) {}
@@ -23,7 +38,7 @@ export class PlaceOrderAction implements Action {
 
 export class PlaceOrderSuccessAction implements Action {
     readonly type = OrdersActionTypes.PlaceSuccess;
-    constructor(public payload: { result: string }) {        
+    constructor(public payload: { confirmation: string }) {        
     }
   }
   export class OrdersFailureAction implements Action {
@@ -31,4 +46,4 @@ export class PlaceOrderSuccessAction implements Action {
     constructor(public payload: { err: string }) {        
     }
   }
-  export type OrdersActions = SelectAccountAction | PlaceOrderAction | PlaceOrderSuccessAction | OrdersFailureAction;
+  export type OrdersActions = SelectAccountAction | QuoteAction | QuoteSuccessAction | PlaceOrderAction | PlaceOrderSuccessAction | OrdersFailureAction;

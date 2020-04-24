@@ -4,8 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Account, Quote, Order } from 'src/app/models';
 import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { QuoteState } from 'src/app/store/reducers/quote';
 import { getQuoteData, getPlaceOrderData, PlaceOrderAction, getSelectedAccountData } from 'src/app/store';
+import { OrdersState } from 'src/app/store/reducers/orders';
 
 @Component({
   selector: 'qt-trade',
@@ -26,7 +26,7 @@ export class TradeComponent {
 
   constructor(fb: FormBuilder,
     private route: ActivatedRoute,
-    private store: Store<QuoteState>) {
+    private store: Store<OrdersState>) {
 
     /*  
     route.paramMap.subscribe(

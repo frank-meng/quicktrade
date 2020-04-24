@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { Quote } from 'src/app/models';
 import { Store, select } from '@ngrx/store';
-import { QuoteState } from 'src/app/store/reducers/quote';
 import { getQuoteData, QuoteAction } from 'src/app/store';
+import { OrdersState } from 'src/app/store/reducers/orders';
 
 @Component({
   selector: 'qt-quote',
@@ -20,7 +20,7 @@ export class QuoteComponent {
   //@Output() lastQuote = new EventEmitter<Quote>();
 
   constructor(
-    private store: Store<QuoteState>
+    private store: Store<OrdersState>
   ) {
     this.quote$ = this.store.pipe(select(getQuoteData));
 

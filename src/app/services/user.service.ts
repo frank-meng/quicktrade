@@ -2,61 +2,34 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, EMPTY, BehaviorSubject, empty } from 'rxjs';
 import { catchError, debounceTime, switchMap, map, defaultIfEmpty, flatMap } from "rxjs/operators";
-import { User } from '../models';
+import { User, JwtToken } from '../models';
 import { API_BASE_URL } from '../app.token';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import { Store, select } from '@ngrx/store';
+import { UserState } from '../store/reducers/user';
+//import { RemoveTokenAction, SetTokenAction, getTokenData } from '../store';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppService {
-
-  public currentUserSubject: BehaviorSubject<User> = new BehaviorSubject(null);
-  public currentUser$: Observable<User>;
-
+export class UserService {
 
   public clientId = 'trader-app';
   public redirectUri = 'http://localhost:4200/quicktrade/postsignin/';
 
   private baseTokenURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/token';
 
+  private baseAuthURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/auth';
+
   constructor(@Inject(API_BASE_URL) private baseUrl: string
     , private _http: HttpClient
-    , private router: Router,
-    private cookieService: CookieService
   ) { }
 
-  saveToken(token) {
-    const accessTokenExpireDate = new Date().getTime() + (1000 * token.expires_in);
-    this.cookieService.set("AXT", token.access_token, new Date(accessTokenExpireDate));
+  login() {
 
-    const refreshToeknExpireDate = new Date().getTime() + (1000 * token.refresh_expires_in);
-    this.cookieService.set("refresh_token", token.refresh_token, new Date(refreshToeknExpireDate));
-
-    console.log("TOKEN=" + JSON.stringify(token));
-    //window.location.href = 'http://localhost:4200/quicktrade/';
-  }
-
-  getRefreshToken() {
-    return this.cookieService.get('refresh_token');
-  }
-
-  getAccessToken() {
-    return this.cookieService.get('AXT');
-  }
-
-  checkCredentials() {
-    if (this.getRefreshToken()) {
-      return true;
-    }
-    return false;
-  }
-
-  logout() {
-    console.log(" log out");
-    this.cookieService.delete('AXT');
+    window.location.href =
+      `${this.baseAuthURL}?response_type=code&scope=write%20read&client_id=${this.clientId}&redirect_uri=${this.redirectUri}`;
   }
 
   retrieveToken(code) {
@@ -74,32 +47,13 @@ export class AppService {
       'Authorization': 'Basic ' + btoa(this.clientId + ":secret")
     });
 
-    this._http.post(this.baseTokenURL, params.toString(), { headers: headers })
-      .subscribe(
-        data => {
-          console.log(" get token " + data);
-          this.saveToken(data);
-          //this.retrieveUser();
-          this.router.navigate(['/']);
-        },
-        err => {
-          console.log(" Invalid Credentials");
-          this.router.navigate(['signin']);
-          // alert('Invalid Credentials')
-        }
-      );
+    return this._http.post(this.baseTokenURL, params.toString(), { headers: headers });
+
   }
 
-  refreshAccessToken(): Observable<any> {
+  refreshAccessToken(refToken: string): Observable<any> {
     console.log(" freshing Token ");
-    const refToken = this.getRefreshToken();
 
-    if (!refToken) {
-      console.log(" freshing Token expired ");
-
-      this.router.navigate(['signin']);
-      return;
-    }
 
     const params = new URLSearchParams();
     params.append('grant_type', 'refresh_token');
@@ -116,5 +70,9 @@ export class AppService {
 
   }
 
+  retrieveUser(): Observable<User> {
+    console.log(" retrieveUser ");
+    return this._http.get<User>(`${this.baseUrl}/api/user/info`);
+  }
 
 }

@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppService } from './shared/app.service';
 
-import { User } from './models';
-import { AppService } from './services';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'qt-root',
@@ -12,8 +10,6 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   title = 'quicktrade';
-  //currentUser: Observable<User>;
-
   constructor(
     private router: Router,
     private appService: AppService

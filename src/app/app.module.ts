@@ -15,11 +15,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule } from '@angular/material/select';
-import {CookieService} from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AccountComponent,SigninComponent, LoginComponent, PostloginComponent, AlertComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent} from './components';
+import { AccountComponent,SigninComponent, PostloginComponent, AlertComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent} from './components';
 import { HTTP_INTERCEPTORS,HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { API_BASE_URL, AUTH_URL } from './app.token';
@@ -30,7 +29,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';                       
  import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {reducers, AccountsEffects, UserEffects, QuoteEffects, OrdersEffects} from './store';
+import {reducers, AccountsEffects, UserEffects, OrdersEffects} from './store';
 
 
 @NgModule({
@@ -38,7 +37,6 @@ import {reducers, AccountsEffects, UserEffects, QuoteEffects, OrdersEffects} fro
     AppComponent,
     HomeComponent,
     AccountComponent,
-    LoginComponent,
     AlertComponent,
     AccountgridComponent,
     TradeComponent,
@@ -72,9 +70,9 @@ import {reducers, AccountsEffects, UserEffects, QuoteEffects, OrdersEffects} fro
       name: ' DevTools',
       logOnly: environment.production
     }),
-    EffectsModule.forRoot([AccountsEffects, UserEffects, QuoteEffects, OrdersEffects]),   
+    EffectsModule.forRoot([AccountsEffects, UserEffects, OrdersEffects]),   
   ],
-  providers: [CookieService,
+  providers: [
     {provide: APP_BASE_HREF, useValue: '/quicktrade'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   //  { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },

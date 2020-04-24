@@ -2,7 +2,6 @@
 
 import * as fromAccounts from './accounts';
 import * as fromUser from './user';
-import * as fromQuote from './quote';
 import * as fromOrders from './orders';
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
@@ -10,7 +9,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 export interface State {
     accounts: fromAccounts.AccountsState;
     user: fromUser.UserState;
-    quote: fromQuote.QuoteState;
     orders: fromOrders.OrdersState;
 
   }
@@ -18,7 +16,6 @@ export interface State {
   export const reducers = {
     accounts: fromAccounts.acountsReducer,
     user: fromUser.userReducer,
-    quote: fromQuote.quoteReducer,
     orders: fromOrders.ordersReducer
 
   };
@@ -28,10 +25,12 @@ export interface State {
   
   
   export const getUserState = createFeatureSelector<fromUser.UserState>('user');
+  export const getTokenData = createSelector(getUserState, fromUser.getJwtToken);
   export const getUserData = createSelector(getUserState, fromUser.getUser);
 
-  export const getQuoteState = createFeatureSelector<fromQuote.QuoteState>('quote');
-  export const getQuoteData = createSelector(getQuoteState, fromQuote.getQuote);
+
+  export const getQuoteState = createFeatureSelector<fromOrders.OrdersState>('orders');
+  export const getQuoteData = createSelector(getQuoteState, fromOrders.getQuote);
 
   export const getSelectedAccountState = createFeatureSelector<fromOrders.OrdersState>('orders');
   export const getSelectedAccountData = createSelector(getSelectedAccountState, fromOrders.selectAccount);

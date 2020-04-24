@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from 'src/app/services';
 import { Router } from '@angular/router';
+import { AppService } from 'src/app/shared/app.service';
 
 @Component({
   selector: 'qt-signin',
@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent  implements OnInit {
-  private baseAuthURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/auth';
 
   constructor(private _service: AppService,private router: Router) { }
   public isLoggedIn = false;
@@ -44,10 +43,8 @@ export class SigninComponent  implements OnInit {
     */
   }
   login() {
-
-    window.location.href = 
-      `${this.baseAuthURL}?response_type=code&scope=write%20read&client_id=${this._service.clientId}&redirect_uri=${this._service.redirectUri}`;
-    }
+    this._service.login();
+  }
   
   logout() {
     this._service.logout();

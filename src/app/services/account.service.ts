@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { API_BASE_URL } from '../app.token';
 import { HttpClient } from '@angular/common/http';
-import { User, Transaction, Account } from '../models';
+import { Transaction, Account } from '../models';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -21,10 +21,6 @@ export class AccountService {
     return this._http.get<Account[]>(`${this.baseUrl}/api/accounts`);
   }
 
-  register(user: User) {
-    return this._http.post(`${this.baseUrl}/users/register`, user);
-  }
-
 
   getAccountTransactions(accountName: string): Observable<Transaction[]> {
     console.log(` get  accound transactions =  ${accountName}`);
@@ -32,20 +28,5 @@ export class AccountService {
     return this._http.get<Transaction[]>(`${this.baseUrl}/api/accttransactions/${accountName}`);
   }
 
-  retrieveUser(): Observable<User> {
-    console.log(" retrieveUser ");
-
-    return this._http.get<User>(`${this.baseUrl}/api/user/info`);
-    /*
-    .pipe(user => {
-      console.log(`server retured ${user}`);
-      return user;
-    }).pipe(catchError(err => {
-      console.log(JSON.stringify(err));
-      return empty()
-    }
-    ));
-    */
-  }
 
 }

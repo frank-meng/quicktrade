@@ -1,14 +1,4 @@
 
-
-export class Account {
-    constructor(
-        public name: string,
-        public type: string,
-        public buyingPower?: number,
-        public balance?: number,
-        public holdings?: Array<Position>) { }
-}
-
 export class User {
         id: number;
         username: string;
@@ -21,12 +11,14 @@ export class User {
 }
 
 
-export class Position {
+export class JwtToken {
     constructor(
-        public id: number,
-        public symbol: string,
-        public nos: number,
-        public bookPrice: number,
-        public date?: string
+        public access_token: string,
+        public access_token_expiry_date: Date,
+
+        public refresh_token: string,
+        public refresh_token_expiry_date: Date,
+
+        public scope: string
     ){}
 }
