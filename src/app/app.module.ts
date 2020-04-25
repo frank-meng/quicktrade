@@ -18,18 +18,18 @@ import {MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AccountComponent,SigninComponent, PostloginComponent, AlertComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent} from './components';
+import { AccountComponent,SigninComponent, PostloginComponent,HomeComponent,AccountgridComponent, QuoteComponent, TradeComponent} from './components';
 import { HTTP_INTERCEPTORS,HttpClientModule } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { API_BASE_URL, AUTH_URL } from './app.token';
-
-import { JwtInterceptor,FakeBackendInterceptor } from './helpers';
 
 import {EffectsModule} from '@ngrx/effects';
 import {StoreRouterConnectingModule, routerReducer} from '@ngrx/router-store';                       
  import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {reducers, AccountsEffects, UserEffects, OrdersEffects} from './store';
+import { JwtInterceptor } from './shared/jwt.interceptor';
+import { AppService } from './shared/app.service';
 
 
 @NgModule({
@@ -37,7 +37,6 @@ import {reducers, AccountsEffects, UserEffects, OrdersEffects} from './store';
     AppComponent,
     HomeComponent,
     AccountComponent,
-    AlertComponent,
     AccountgridComponent,
     TradeComponent,
     QuoteComponent,
@@ -72,7 +71,7 @@ import {reducers, AccountsEffects, UserEffects, OrdersEffects} from './store';
     }),
     EffectsModule.forRoot([AccountsEffects, UserEffects, OrdersEffects]),   
   ],
-  providers: [
+  providers: [ AppService,
     {provide: APP_BASE_HREF, useValue: '/quicktrade'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   //  { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },

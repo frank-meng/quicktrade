@@ -1,12 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, EMPTY, BehaviorSubject, empty } from 'rxjs';
-import { catchError, debounceTime, switchMap, map, defaultIfEmpty, flatMap } from "rxjs/operators";
-import { User, JwtToken } from '../models';
+import { Observable } from 'rxjs';
+import { User } from '../models';
 import { API_BASE_URL } from '../app.token';
-import { Router } from '@angular/router';
-import { Store, select } from '@ngrx/store';
-import { UserState } from '../store/reducers/user';
 //import { RemoveTokenAction, SetTokenAction, getTokenData } from '../store';
 
 

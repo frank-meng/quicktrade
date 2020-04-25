@@ -20,9 +20,6 @@ export class TradeService {
         return empty()
         
       }));
-    // const quote: Quote = new Quote("AAPL", 145.9);
-
-    //return of (quote);
   }
 
   placeOrder(order: Order): Observable<any> {
@@ -31,12 +28,12 @@ export class TradeService {
     return this.http.post<any>(`${this.baseUrl}/api/orders`, order)
       .pipe(map(id => {
         console.log(`bid retured ${id}`);
-       // this.currentUserSubject.next(user);
       return id;
     }));;
   }
 
   checkOrderStatus(orderId: number) {
-    return this.http.get(`${this.baseUrl}/api/orders/${orderId}`);
+    this.http.get(`${this.baseUrl}/api/orders/${orderId}`);
   }
+  
 }

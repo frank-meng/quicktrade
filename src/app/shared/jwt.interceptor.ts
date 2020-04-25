@@ -7,7 +7,7 @@ import { Store, select } from '@ngrx/store';
 import { UserState } from '../store/reducers/user';
 import { JwtToken } from '../models';
 import { getTokenData } from '../store';
-import { AppService } from '../shared/app.service';
+import { AppService } from './app.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
