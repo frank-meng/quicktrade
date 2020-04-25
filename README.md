@@ -14,7 +14,7 @@ ng new quicktrade --prefix qt --routing --style=scss
 npm i --save @angular/cdk@8.2.3 @angular/material@8.2.3
 npm i @angular/flex-layout@8.0.0-beta.27
 ```
-## 2.Create Components
+## 2. Create Components
 	The project folder structure is :
              --src  
 	       ------styles   
@@ -44,7 +44,7 @@ ng g s service/trade
 ```
 ## TODO:  add a footer component, implement menu, themes seem not working 
 
-## 3.Connect to backend
+## 3. Connect to backend
 The real backend is a SpringBoot REST server. Angular has a nice HTTPClient tool to connect to rest servers. But I don’t want to spend time on this at the beginning. So I did this in three steps:
 1. Return static response in service layer. Once this is done, the app is runnable, and I can navigate between pages with data showing on them. Also I can test layout and style.
 2. Create the FakeBackend using HttpInterceptor. Now the service code is real, but all traffic goes to the FakeBackend first. The FackBackend can simulate real responses based on patterns, So some calls go to real back, others to fack one. It is very useful because the real backend is also changing.  The fake one can also simulate authentication responses to make testing faster.
@@ -52,24 +52,30 @@ The real backend is a SpringBoot REST server. Angular has a nice HTTPClient tool
 
 ## TODO:  enable SSL in all layers, move all apps to Amazon
 
-## 4.Added Login
+## 4. Add Login/authentication
+
 At begining, I created Login component, SignUp component, authGuard, and authentication service. This is to simulate the self managed authentication/authorization style. But soon I decided to dedicate the CIAM piece to KeyCloak server, and leverage the OpenID protocol for authentication. 
 
 Now, the app doesn't manage login, signUp any more. KeyCloak can even do MFA during signin.
 
 ## TODO: can the server trigers step-up in processing request? for example selling a stock 10% below the market price.
 
-## 5.Added Keycloak and JWT
+## 5.Add Keycloak and JWT
 
-I installed KeyCloak standalone verson on my local, and created a simple client using Angular App to test it. Everything works fine. Meanwhile, I implemented the JWT verification on server side.
+I installed KeyCloak standalone verson on my local, and created a simple client using Angular App to test it. Everything works fine. Meanwhile, I implemented the JWT verification on sprintboot server side.
+
+- Store tokens. I tried to store tokens on Cookie and LocalStorage. 
+	- Cookie is good because it has expiration setting. So in theory, tokens will be unavialble automatically once it passes the expiry date. I tried two different cookie npm libs but none of them worked well. They are not reliable, and have issue in token refresh code as well. 
+	- LocalStorage is nother choice, and I made it worked. But the storage can not store Object, but only string. The code became cubersome. 
+	- Finnally, I implemented token storage using NGRX store.  
+- Inject token. The JWT token injection uses HttpInterceptor. The logic is configurable based on the URL pattern. I can choose not inject JWT for some URL requests. 
+- Refresh token. This also leverages HttpInterceptor. At begining, I check the access token expiry before sending any request. If it is already expired, the token refresh logic kicks in. However, it did not work well. At last, I moved the logic in the error handling part - execuing it when a request was rejected because of 401 error. 
+
+All JWT token handling code is in UserService.
 
 
 
-
-
-
-
-## TODO:  enable remote KeyCloak 
+## TODO: is it safe to refresh token from client side?   enable remote KeyCloak 
 
 ## 6.NGRX
 
