@@ -1,4 +1,4 @@
-# Quicktrade
+# Quicktrade -- development process
 
 ## 1. Setup App
 
@@ -9,10 +9,11 @@ The app’s skeleton is based on the book Angular Development With Typescript 2n
 My NodeJS version is 8. After the project is created, I add style and themes following the book’s instructions. Then I make changes in Angular.json to use the style files.
 
 Commands:
+```
 ng new quicktrade --prefix qt --routing --style=scss
 npm i --save @angular/cdk@8.2.3 @angular/material@8.2.3
 npm i @angular/flex-layout@8.0.0-beta.27
-
+```
 ## 2.Create Components
 	The project folder structure is :
              --src  
