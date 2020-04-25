@@ -50,7 +50,7 @@ The real backend is a SpringBoot REST server. Angular has a nice HTTPClient tool
 2. Create the FakeBackend using HttpInterceptor. Now the service code is real, but all traffic goes to the FakeBackend first. The FackBackend can simulate real responses based on patterns, So some calls go to real back, others to fack one. It is very useful because the real backend is also changing.  The fake one can also simulate authentication responses to make testing faster.
 3. Connect to the real backend, both Trader and Exchange applications. Also the authentication server is KeyCloak running on my local. 
 
-## TODO:  enable SSL in all layers, move all apps to Amazon
+## TODO:  enable SSL in all layers, move all apps to cloud
 
 ## 4. Add Login/authentication
 
@@ -62,32 +62,35 @@ Now, the app doesn't manage login, signUp any more. KeyCloak can even do MFA dur
 
 ## 5.Add Keycloak and JWT
 
-I installed KeyCloak standalone verson on my local, and created a simple client using Angular App to test it. Everything works fine. Meanwhile, I implemented the JWT verification on sprintboot server side.
+I installed KeyCloak standalone verson on my local, and created a simple client using Angular App to test it. Everything works fine. Meanwhile, I implemented the JWT verification on sprintboot server side. Some of the considerations:
 
 - Store tokens. I tried to store tokens on Cookie and LocalStorage. 
 	- Cookie is good because it has expiration setting. So in theory, tokens will be unavialble automatically once it passes the expiry date. I tried two different cookie npm libs but none of them worked well. They are not reliable, and have issue in token refresh code as well. 
 	- LocalStorage is nother choice, and I made it worked. But the storage can not store Object, but only string. The code became cubersome. 
-	- Finnally, I implemented token storage using NGRX store.  
+	- Finnally, I decided to use NGRX to store tokens. It is much cleaner and stable.
+	
 - Inject token. The JWT token injection uses HttpInterceptor. The logic is configurable based on the URL pattern. I can choose not inject JWT for some URL requests. 
 - Refresh token. This also leverages HttpInterceptor. At begining, I check the access token expiry before sending any request. If it is already expired, the token refresh logic kicks in. However, it did not work well. At last, I moved the logic in the error handling part - execuing it when a request was rejected because of 401 error. 
 
 All JWT token handling code is in UserService.
 
 
-
 ## TODO: is it safe to refresh token from client side?   enable remote KeyCloak 
 
 ## 6.NGRX
 
+NGRX is very fast and clean. All data objects have been moved to ngrx store, including tokens, User, Accounts, Quote, Order.
+
+
 ```
 npm i @ngrx/store@8.6.0
 npm i @ngrx/effects@8.6.0
-@ngrx/store-devtools
+npm i @ngrx/store-devtools@8.6.0
 ```
 
 
 
 [Keycloak getting-started](https://www.keycloak.org/getting-started/getting-started-zip)
 
-## TODO:  Lint, Unit tests, Readme 
+## TODO:  WebSock to receive push notification. Lint, Unit tests, e2e test 
 
