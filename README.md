@@ -1,6 +1,6 @@
 # Quicktrade
 
-##Setup App
+## 1. Setup App
 
 GIT repository: https://github.com/frank-meng/quicktrade
 
@@ -13,7 +13,7 @@ ng new quicktrade --prefix qt --routing --style=scss
 npm i --save @angular/cdk@8.2.3 @angular/material@8.2.3
 npm i @angular/flex-layout@8.0.0-beta.27
 
-Create Components
+## 2.Create Components
 	The project folder structure is :
              --src  
 	       ------styles   
@@ -41,17 +41,17 @@ ng g s service/accounts
 ng g s service/trade
 TODO:  add a footer component, implement menu, themes seem not working,
 
-Connect to backend
+## 3.Connect to backend
 The real backend is a SpringBoot REST server. Angular has a nice HTTPClient tool to connect to rest servers. But I don’t want to spend time on this at the beginning. So I did this in three steps:
 Return static response in service layer. Once this is done, the app is runnable, and I can navigate between pages with data showing on them. Also I can test layout and style.
 Create the FakeBackend using HttpInterceptor. Now the service code is real, but all traffic goes to the FakeBackend first. The FackBackend can simulate real responses based on patterns, So some calls go to real back, others to fack one. It is very useful because the real backend is also changing.  The fake one can also simulate authentication responses to make testing faster.
 Connect to the real backend, both Trader and Exchange applications. Also the authentication server is KeyCloak running on my local. 
 
 TODO:  enable SSL in all layers, enable remote KeyCloak
-Added Login
+## 4.Added Login
 
-Added Keycloak and JWT
-NGRX
+## 5.Added Keycloak and JWT
+## 6.NGRX
 npm i @ngrx/store@8.6.0
 npm i @ngrx/effects@8.6.0
 @ngrx/store-devtools
