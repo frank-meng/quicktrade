@@ -1,6 +1,6 @@
 # Quicktrade
 
-Setup App
+##Setup App
 
 GIT repository: https://github.com/frank-meng/quicktrade
 
