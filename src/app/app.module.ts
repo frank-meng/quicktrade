@@ -72,7 +72,7 @@ import { AppService } from './shared/app.service';
     EffectsModule.forRoot([AccountsEffects, UserEffects, OrdersEffects]),   
   ],
   providers: [ AppService,
-    {provide: APP_BASE_HREF, useValue: '/quicktrade'},
+   // {provide: APP_BASE_HREF, useValue: '/quicktrade'},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   //  { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
 

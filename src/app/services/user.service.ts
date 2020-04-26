@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models';
-import { API_BASE_URL } from '../app.token';
+import { API_BASE_URL, AUTH_URL } from '../app.token';
 //import { RemoveTokenAction, SetTokenAction, getTokenData } from '../store';
 
 
@@ -12,14 +12,18 @@ import { API_BASE_URL } from '../app.token';
 export class UserService {
 
   public clientId = 'trader-app';
-  public redirectUri = 'http://localhost:4200/quicktrade/postsignin/';
+  //public redirectUri = 'http://localhost:4200/quicktrade/postsignin/';
+  //private baseTokenURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/token';
+  //private baseAuthURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/auth';
 
-  private baseTokenURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/token';
+  public redirectUri = `${this.baseUrl}/postsignin/`;
+  private baseTokenURL = `${this.authUrl}/protocol/openid-connect/token`;
+  private baseAuthURL = `${this.authUrl}/protocol/openid-connect/auth`;
 
-  private baseAuthURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/auth';
-
-  constructor(@Inject(API_BASE_URL) private baseUrl: string
-    , private _http: HttpClient
+  constructor(
+    @Inject(API_BASE_URL) private baseUrl: string,
+    @Inject(AUTH_URL) private authUrl: string,
+    private _http: HttpClient
   ) { }
 
   login() {

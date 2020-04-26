@@ -1,12 +1,27 @@
 {
+    "/api2": {
+      "target": "http://localhost:8899",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/trader2": {
+      "target": "http://localhost:8899",
+      "secure": false,
+      "pathRewrite": {
+        "^/trader": ""
+      },
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
     "/api": {
-      "target": "http://127.0.0.1:8899",
+      "target": "http://quicktrade-dev.us-east-1.elasticbeanstalk.com",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
     },
     "/trader": {
-      "target": "http://localhost:8888",
+      "target": "http://quicktrade-dev.us-east-1.elasticbeanstalk.com",
       "secure": false,
       "pathRewrite": {
         "^/trader": ""

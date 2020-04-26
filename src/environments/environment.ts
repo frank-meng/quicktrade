@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "",
-  authUrl: ""
+  apiBaseUrl: "http://localhost:4200",
+  authUrl: "http://54.89.217.163/auth/realms/frankrealm"
 };
 
 /*
