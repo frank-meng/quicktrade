@@ -1,21 +1,24 @@
-import { UserActions, UserActionTypes } from '../actions';
 import { User, JwtToken } from '../../models';
+import { UserActions, UserActionTypes } from '../actions/user';
+import {Account} from '../../models';
 
 
 export interface UserState {
   token: JwtToken,
-  user: User;
+  user: User,
+  accounts: Account[],
 }
 
 
 const initState: UserState = {
   token: null,
-  user: null
+  user: null,
+  accounts: [],
 }
 
 export function userReducer(state = initState, action: UserActions): UserState {
 
-  console.log(` loading user  ${action.type} -- ${JSON.stringify(state)}`);
+ // console.log(` loading user  ${action.type} -- ${JSON.stringify(state)}`);
 
   switch (action.type) {
     case UserActionTypes.Set_Token: {
@@ -44,6 +47,19 @@ export function userReducer(state = initState, action: UserActions): UserState {
         user: action.payload.user
       };
     }
+    case UserActionTypes.Load_Accounts: {
+      return {
+        ...state,
+        accounts :[]
+      };
+    }
+    case UserActionTypes.Load_Accounts_Success: {
+        return {
+          ...state,
+          accounts :action.payload.accounts
+        };
+      }
+    
     default: {
       return state;
     }
@@ -51,5 +67,9 @@ export function userReducer(state = initState, action: UserActions): UserState {
 
 }
 export const getUser = (state: UserState) => state.user;
-export const getJwtToken = (state: UserState) => state.token;
-
+export const getJwtToken = (state: UserState) => { 
+  console.log( "  get jwttoken " + state);
+  return state?  state.token: null;
+  //return state.token;
+}
+export const getAccounts = (state: UserState) => state.accounts;

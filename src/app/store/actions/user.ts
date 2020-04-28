@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User, JwtToken } from '../../models';
+import {Account} from '../../models';
 
 
 export enum UserActionTypes {
@@ -9,6 +10,11 @@ export enum UserActionTypes {
 
   Load_User = '[User] Load',
   Load_User_Success = '[User] LoadSuccess',
+
+  Load_Accounts = '[User] Load_accounts',
+  Load_Accounts_Success = '[User] Load_accounts Success',
+
+
   Failed = '[User] Failed to load'
 }
 // token actions
@@ -31,9 +37,26 @@ export class UserSuccessAction implements Action {
   constructor(public payload: { user: User }) {
   }
 }
+
+
+export class UserAccountsAction implements Action {
+  readonly type = UserActionTypes.Load_Accounts;
+
+  constructor() {}
+}
+
+
+export class UserAccountsSuccessAction implements Action {
+  readonly type = UserActionTypes.Load_Accounts_Success;
+  constructor(public payload: { accounts: Account[] }) {        
+  }
+}
+
+
+
 export class UserFailureAction implements Action {
   readonly type = UserActionTypes.Failed;
   constructor(public payload: { err: string }) {
   }
 }
-export type UserActions = SetTokenAction | RemoveTokenAction | UserAction | UserSuccessAction | UserFailureAction;
+export type UserActions = SetTokenAction | RemoveTokenAction | UserAction | UserSuccessAction | UserAccountsAction | UserAccountsSuccessAction | UserFailureAction;

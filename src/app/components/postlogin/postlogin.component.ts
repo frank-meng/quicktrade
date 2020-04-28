@@ -15,7 +15,7 @@ export class PostloginComponent implements OnInit {
   ngOnInit() {
     console.log( "  PostloginComponent init");
 
-    this.isLoggedIn = this._service.checkCredentials();    
+    this.isLoggedIn = false ; //this._service.checkCredentials();    
 
     let i = window.location.href.indexOf('code');
 
@@ -24,7 +24,7 @@ export class PostloginComponent implements OnInit {
 
     if(!this.isLoggedIn && i != -1) {
       this._service.retrieveToken(window.location.href.substring(i + 5)) ;
-     // this.router.navigate([ '' ]);   
+      this.router.navigate([ '' ]);   
     }else if (this.isLoggedIn){
       console.log( " go to home ");
 

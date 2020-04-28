@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { UserState } from '../store/reducers/user';
-import { RemoveTokenAction, getTokenData, SetTokenAction } from '../store';
-import { Observable } from 'rxjs';
+import { getTokenData, AppState } from '../store';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { JwtToken } from '../models';
 import { UserService } from '../services';
+import { SetTokenAction, RemoveTokenAction } from '../store/actions/user';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,16 @@ export class AppService {
 
   public currentToken$: Observable<JwtToken>;
 
-  private currentTokenValue: JwtToken;
+  //private currentTokenValue: JwtToken;
+  private currentTokenValue: BehaviorSubject<JwtToken> = new BehaviorSubject(null);
 
   constructor(private router: Router,
-    private store: Store<UserState>,
+    private store: Store<AppState>,
     private userService: UserService) {
     this.currentToken$ = this.store.pipe(select(getTokenData));
 
     this.currentToken$.subscribe(token => {
-      this.currentTokenValue = token;
+      this.currentTokenValue.next(token);
 
     });
 
@@ -70,7 +72,7 @@ export class AppService {
       this.router.navigate(['signin']);
       return;
     }
-    const refToken = this.currentTokenValue.refresh_token;
+    const refToken = this.currentTokenValue.value.refresh_token;
 
     if (!refToken) {
       console.log(" no refresh token");
@@ -83,8 +85,9 @@ export class AppService {
   }
 
   checkCredentials() {
-    if (this.currentTokenValue) {
-      if (this.currentTokenValue.refresh_token_expiry_date > new Date())
+    console.log(" this.currentTokenValue "+ this.currentTokenValue);
+    if (this.currentTokenValue && this.currentTokenValue.value) {
+      if (this.currentTokenValue.value.refresh_token_expiry_date > new Date())
         return true;
     }
 

@@ -24,20 +24,16 @@ const initState: OrdersState = {
   confirmation: null
 }
 
-export function ordersReducer(state = initState, action: OrdersActions): OrdersState {
+export function ordersReducer(state:OrdersState = initState, action: OrdersActions): OrdersState {
 
   console.log(` loading order  ${action.type} -- ${JSON.stringify(state)}`);
 
   switch (action.type) {
-    case OrdersActionTypes.SelectAccount: {
+    case OrdersActionTypes.Select_Account: {
       // reset everything if account changes
       return {
         ...state,
-        selectedAccount: action.payload.account,
-        symbol: null,
-        quote: null,
-        order: null,
-        confirmation: null
+        selectedAccount: action.payload.account
       };
     }
     case OrdersActionTypes.LoadQuote: {

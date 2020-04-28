@@ -3,11 +3,12 @@ import { Observable } from 'rxjs';
 import { MediaObserver } from '@angular/flex-layout';
 import { map, startWith } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AccountService } from 'src/app/services';
 import { Account } from '../../models';
 import { Store, State, select } from '@ngrx/store';
-import { AccountsState } from 'src/app/store/reducers/accounts';
-import { AccountsAction, getAccountsData, SelectAccountAction } from 'src/app/store';
+import { UserState, getAccounts } from 'src/app/store/reducers/user';
+import { getAccountsData, AppState } from 'src/app/store';
+import { UserAccountsAction } from 'src/app/store/actions/user';
+import { SelectAccountAction } from 'src/app/store/actions';
 
 @Component({
   selector: 'qt-accountgrid',
@@ -30,7 +31,7 @@ export class AccountgridComponent {
 
   constructor(private media: MediaObserver,
     private router: Router,
-    private store: Store<AccountsState>) {
+    private store: Store<AppState>) {
       
     // If the initial screen size is xs ObservableMedia doesn't emit an event
     // and grid-list rendering fails. Once the following issue is closed, this
@@ -42,16 +43,16 @@ export class AccountgridComponent {
       );
       this.accounts$ = this.store.pipe(select(getAccountsData));
       
-      this.store.dispatch(new AccountsAction());
+      this.store.dispatch(new UserAccountsAction());
 
   }
 
   trade(account:Account){
-    console.log (" trading "+ Account.name);
+    console.log (" trading "+ account.name);
 
     this.store.dispatch(new SelectAccountAction({account: account}));
 
-    this.router.navigate([ '/trade' ]);          
+    this.router.navigate([ 'order' ]);          
     
   }
 }

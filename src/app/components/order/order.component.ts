@@ -4,17 +4,19 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Account, Quote, Order } from 'src/app/models';
 import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { getQuoteData, getPlaceOrderData, PlaceOrderAction, getSelectedAccountData } from 'src/app/store';
-import { OrdersState } from 'src/app/store/reducers/orders';
+import { AppState, getQuoteData, getPlaceOrderData, getSelectedAccountData } from 'src/app/store';
+import { PlaceOrderAction } from 'src/app/store/actions';
+
+
 
 @Component({
-  selector: 'qt-trade',
-  templateUrl: './trade.component.html',
-  styleUrls: ['./trade.component.scss']
+  selector: 'qt-order',
+  templateUrl: './order.component.html',
+  styleUrls: ['./order.component.scss']
 })
 
 
-export class TradeComponent {
+export class OrderComponent {
   readonly tradeForm: FormGroup;
   result$: Observable<string>;
   quote$: Observable<Quote>;
@@ -26,14 +28,14 @@ export class TradeComponent {
 
   constructor(fb: FormBuilder,
     private route: ActivatedRoute,
-    private store: Store<OrdersState>) {
+    private store: Store<AppState>) {
 
+      console.log("OrderComponent  constructor");
     /*  
     route.paramMap.subscribe(
       params => this.accountName = params.get('accountName')
     );
     */
-
     this.tradeForm = fb.group({
       bidPrice: [, Validators.min(0)],
       nos: [, Validators.min(0)],
@@ -51,6 +53,7 @@ export class TradeComponent {
       if (q !=null)
         this.selectedSymbol=q.symbol;
     });
+
   }
 
   onOrder(): void {

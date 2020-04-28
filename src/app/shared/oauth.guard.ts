@@ -13,7 +13,7 @@ export class OAuthGuard implements CanActivate{
     canActivate(route: ActivatedRouteSnapshot, 
         state: RouterStateSnapshot): boolean  {
 
-        console.log( "  OAuthGuard ");
+        console.log( "  OAuthGuard "+state.url);
 
         if (this.appService.checkCredentials()){
             return true;

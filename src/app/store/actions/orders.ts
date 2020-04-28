@@ -4,7 +4,7 @@ import { Order,Account, Quote} from '../../models';
 
 
 export enum OrdersActionTypes {
-    SelectAccount = '[Orders] Select Account',
+    Select_Account = '[Orders] Select Account',
 
     LoadQuote = '[Quote] Load',
     LoadQuoteSuccess = '[Quote] LoadSuccess',
@@ -13,11 +13,12 @@ export enum OrdersActionTypes {
     PlaceSuccess = '[Orders] PlaceSuccess',
     Failed = '[Orders] Failed to load'
   }
-export class SelectAccountAction implements Action {
-    readonly type = OrdersActionTypes.SelectAccount;
+
+  export class SelectAccountAction implements Action {
+    readonly type = OrdersActionTypes.Select_Account;
     constructor(public payload: { account: Account}) {}
-}
-  
+  }
+
 export class QuoteAction implements Action {
   readonly type = OrdersActionTypes.LoadQuote;
   constructor(public payload: {symbol: string }) {}
@@ -46,4 +47,4 @@ export class PlaceOrderSuccessAction implements Action {
     constructor(public payload: { err: string }) {        
     }
   }
-  export type OrdersActions = SelectAccountAction | QuoteAction | QuoteSuccessAction | PlaceOrderAction | PlaceOrderSuccessAction | OrdersFailureAction;
+  export type OrdersActions =  SelectAccountAction | QuoteAction | QuoteSuccessAction | PlaceOrderAction | PlaceOrderSuccessAction | OrdersFailureAction;

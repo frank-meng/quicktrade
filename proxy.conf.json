@@ -14,13 +14,13 @@
       "changeOrigin": true,
       "logLevel": "debug"
     },
-    "/api": {
+    "/api3": {
       "target": "http://quicktrade-dev.us-east-1.elasticbeanstalk.com",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
     },
-    "/trader": {
+    "/trader3": {
       "target": "http://quicktrade-dev.us-east-1.elasticbeanstalk.com",
       "secure": false,
       "pathRewrite": {

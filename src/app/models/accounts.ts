@@ -1,7 +1,7 @@
 export class Account {
     constructor(
         public name: string,
-        public type: string,
+        public category: string,
         public buyingPower?: number,
         public balance?: number,
         public holdings?: Array<Position>) { }

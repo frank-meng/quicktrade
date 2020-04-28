@@ -31,7 +31,7 @@ At beginning, the app has two pages: Home (showing accounts) and Order (include 
 - On the other hand, it is not clean to put too much code into the App component.
 
 
-So finally, I put nav and menu in the App component, but user info in the Home component. Although I include Material and flex libs, I do not use them much. The UI design can be left to the next phase.  
+So finally, I decided to put nav and menu in the App component, but user info in the Home component. Although I include Material and flex libs, I do not use them much. The UI design is put off for the next phase.  
 
 Commands:
 ```
@@ -42,7 +42,7 @@ ng g s service/user
 ng g s service/accounts
 ng g s service/trade
 ```
-## TODO:  add a footer component, implement menu, themes seem not working 
+## TODO:  add a open account, footer component, implement menu, themes seem not working 
 
 ## 3. Connect to backend
 The real backend is a SpringBoot REST server. Angular has a nice HTTPClient tool to connect to rest servers. But I don’t want to spend time on this at the beginning. So I did this in three steps:
@@ -50,9 +50,13 @@ The real backend is a SpringBoot REST server. Angular has a nice HTTPClient tool
 2. Create the FakeBackend using HttpInterceptor. Now the service code is real, but all traffic goes to the FakeBackend first. The FackBackend can simulate real responses based on patterns, So some calls go to real back, others to fack one. It is very useful because the real backend is also changing.  The fake one can also simulate authentication responses to make testing faster.
 3. Connect to the real backend, both Trader and Exchange applications. Also the authentication server is KeyCloak running on my local. 
 
-## TODO:  enable SSL in all layers, move all apps to cloud
+Server endpoint URLs are in environment.
 
-## 4. Add Login/authentication
+Now the whole solution is on AWS. S3 service holds the UI pice. The UI client can talk to a public KeyCloak server (running in an AWS EC2 container), and application server ( another docker container in AWS).
+
+## TODO:  enable SSL in all layers
+
+## 4. Added Login/authentication, but later removed
 
 At begining, I created Login component, SignUp component, authGuard, and authentication service. This is to simulate the self managed authentication/authorization style. But soon I decided to dedicate the CIAM piece to KeyCloak server, and leverage the OpenID protocol for authentication. 
 
@@ -74,13 +78,15 @@ I installed KeyCloak standalone verson on my local, and created a simple client 
 
 All JWT token handling code is in UserService.
 
+KeyClaok offers a container based server. I have deployed it on AWS and everything works well. The KeyCloak endpoint URL is defined in environment.
 
-## TODO: is it safe to refresh token from client side?   enable remote KeyCloak 
+[Keycloak getting-started](https://www.keycloak.org/getting-started/getting-started-zip)
+
+## TODO: is it safe to refresh token from client side?   
 
 ## 6.NGRX
 
 NGRX is very fast and clean. All data objects have been moved to ngrx store, including tokens, User, Accounts, Quote, Order.
-
 
 ```
 npm i @ngrx/store@8.6.0
@@ -88,9 +94,10 @@ npm i @ngrx/effects@8.6.0
 npm i @ngrx/store-devtools@8.6.0
 ```
 
+I had a hard time to make the production build working with NGRX. I have multiple states object and everything works well in dev mode. But in production build, I can only register state oject, otherwise the whole thing falls apart. It is very frustrating that dev and production have different behavior.  I treid to make each object seperate module and use lazy loading to laod them one by one. But this still does not work in production build. Eventually, I combined all state objects into one, and slice them later in my selector and reducer.  
 
+Need to spend some time later to make the lazy loaing working in prod build. 
 
-[Keycloak getting-started](https://www.keycloak.org/getting-started/getting-started-zip)
 
 ## TODO:  WebSock to receive push notification. Lint, Unit tests, e2e test 
 

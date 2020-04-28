@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "http://localhost:4200",
-  authUrl: "http://54.89.217.163/auth/realms/frankrealm"
+  webBaseUrl: "http://localhost:4200",
+  apiBaseUrl: "http://quicktrade-dev.us-east-1.elasticbeanstalk.com",
+  authUrl: "http://34.228.140.31/auth/realms/frankrealm"
 };
 
 /*

@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models';
-import { API_BASE_URL, AUTH_URL } from '../app.token';
+import { API_BASE_URL, AUTH_URL ,WEB_BASE_URL } from '../apptokens';
 //import { RemoveTokenAction, SetTokenAction, getTokenData } from '../store';
 
 
@@ -16,11 +16,12 @@ export class UserService {
   //private baseTokenURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/token';
   //private baseAuthURL = 'http://localhost:8080/auth/realms/frankrealm/protocol/openid-connect/auth';
 
-  public redirectUri = `${this.baseUrl}/postsignin/`;
+  public redirectUri = `${this.webBaseUrl}/postsignin/`;
   private baseTokenURL = `${this.authUrl}/protocol/openid-connect/token`;
   private baseAuthURL = `${this.authUrl}/protocol/openid-connect/auth`;
 
   constructor(
+    @Inject(WEB_BASE_URL) private webBaseUrl: string,
     @Inject(API_BASE_URL) private baseUrl: string,
     @Inject(AUTH_URL) private authUrl: string,
     private _http: HttpClient

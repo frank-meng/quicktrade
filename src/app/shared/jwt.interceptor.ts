@@ -6,7 +6,7 @@ import { catchError, flatMap, switchMap, filter, take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { UserState } from '../store/reducers/user';
 import { JwtToken } from '../models';
-import { getTokenData } from '../store';
+import { getTokenData, AppState } from '../store';
 import { AppService } from './app.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class JwtInterceptor implements HttpInterceptor {
     private token$: Observable<JwtToken>;
 
     constructor(private appService: AppService,
-        private store: Store<UserState>) {
+        private store: Store<AppState>) {
         this.token$ = this.store.pipe(select(getTokenData));
 
         this.token$.pipe(filter( t=> t!=null)).subscribe(jwtToken => {
@@ -30,7 +30,8 @@ export class JwtInterceptor implements HttpInterceptor {
         // add authorization header with jwt token if available
 
         const { url, method, headers, body } = request;
-        if (url.startsWith('/api')) {
+       // if (url.startsWith('/api')) {
+        if (/\/api/.test(url)){   
             if (this.access_token) {
                 request = request.clone({
                     setHeaders: {
@@ -104,21 +105,4 @@ export class JwtInterceptor implements HttpInterceptor {
         }
 
     }
-    /*
-        intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
-            console.log(" JwtInterceptor ");
-            // add authorization header with jwt token if available
-            let currentUser = this.authenticationService.currentUserValue;
-            if (currentUser && currentUser.token) {
-                request = request.clone({
-                    setHeaders: { 
-                        Authorization: `Bearer ${currentUser.token}`
-                    }
-                });
-            }
-    
-            return next.handle(request);
-        }
-        */
 }
